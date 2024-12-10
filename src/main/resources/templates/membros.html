@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestão de Membros</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+</head>
+<body class="bg-dark text-light">
+<header class="navbar navbar-expand-lg bd-navbar sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark container-xxl bd-gutter flex-wrap flex-lg-nowrap">
+    <a class="navbar-brand" href="#">Nome do Sistema</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" href="/membros">Membros</a>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+                <span class="navbar-text" th:text="${username}"></span>
+            </li>
+            <li class="nav-item">
+                <form th:action="@{/logout}" method="post" class="form-inline">
+                    <button type="submit" class="btn btn-link nav-link">Sair</button>
+                </form>
+            </li>
+        </ul>
+    </div>
+</nav>
+</header>
+<div class="container mt-4 text-light">
+    <nav aria-label="breadcrumb text-light">
+        <ol class="breadcrumb text-light">
+            <li class="breadcrumb-item text-light"><a href="/home">Home</a></li>
+            <li class="breadcrumb-item active text-light" aria-current="page">Membros</li>
+        </ol>
+    </nav>
+    <div class="row mt-4">
+        <!-- Tabela de membros -->
+        <div class="col-md-12">
+            <h3>Gerenciamento de Membros</h3>
+            <button class="btn btn-success mb-3" onclick="addMembro()">Novo Membro</button>
+            <table class="table table-dark table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nome</th>
+                    <th>Email</th>
+                    <th>Ações</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:if="${#lists.isEmpty(membros)}">
+                    <td colspan="4" class="text-center">Nenhum membro encontrado</td>
+                </tr>
+                <tr th:each="membro : ${membros}">
+                    <td th:text="${membro.id}">1</td>
+                    <td th:text="${membro.nome}">Nome</td>
+                    <td th:text="${membro.email}">email@example.com</td>
+                    <td>
+                        <button class="btn btn-primary btn-sm" 
+                                th:data-id="${membro.id}" 
+                                th:data-nome="${membro.nome}" 
+                                th:data-email="${membro.email}" 
+                                onclick="editMembro(this)">Editar</button>
+                        <form th:action="@{/membros/delete/{id}(id=${membro.id})}" method="post" style="display:inline;" onsubmit="return confirm('Tem certeza que deseja excluir este membro?');">
+                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="membroModal" tabindex="-1" aria-labelledby="membroModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-dark text-light">
+            <div class="modal-header">
+                <h5 class="modal-title" id="membroModalLabel">Adicionar Novo Membro</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form th:action="@{/membros/save}" method="post" class="form">
+                    <input type="hidden" name="id" th:value="${membro != null ? membro.id : ''}"/>
+                    <input type="hidden" name="isEdit" th:value="${isEdit}"/>
+                    <div class="mb-3">
+                        <label for="nome" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="nome" name="nome" th:value="${membro != null ? membro.nome : ''}" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="email" class="form-label">Email</label>
+                        <input type="email" class="form-control" id="email" name="email" th:value="${membro != null ? membro.email : ''}" required>
+                    </div>
+                    <button type="submit" class="btn btn-success">Salvar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function addMembro() {
+        document.getElementById('membroModalLabel').innerText = 'Adicionar Novo Membro';
+        document.querySelector('input[name="id"]').value = '';
+        document.querySelector('input[name="nome"]').value = '';
+        document.querySelector('input[name="email"]').value = '';
+        document.querySelector('input[name="isEdit"]').value = false;
+        var membroModal = new bootstrap.Modal(document.getElementById('membroModal'));
+        membroModal.show();
+    }
+
+    function editMembro(button) {
+        var id = button.getAttribute('data-id');
+        var nome = button.getAttribute('data-nome');
+        var email = button.getAttribute('data-email');
+        document.getElementById('membroModalLabel').innerText = 'Editar Membro';
+        document.querySelector('input[name="id"]').value = id;
+        document.querySelector('input[name="nome"]').value = nome;
+        document.querySelector('input[name="email"]').value = email;
+        document.querySelector('input[name="isEdit"]').value = true;
+        var membroModal = new bootstrap.Modal(document.getElementById('membroModal'));
+        membroModal.show();
+        console.log(id, nome, email);
+    }
+</script>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script></body>
+</html>
