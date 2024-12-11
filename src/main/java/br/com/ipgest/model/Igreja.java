@@ -9,6 +9,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,7 +29,7 @@ public class Igreja {
     private String nome;
 
     @Column(unique = true)
-    @Pattern(regexp = "\\d{14}", message = "CNPJ deve conter 14 dígitos")
+    @Pattern(regexp = "\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}", message = "CNPJ deve estar no formato 00.000.000/0000-00")
     private String cnpj;
 
     @Past(message = "A data de organização deve ser anterior à data atual")
@@ -38,6 +39,18 @@ public class Igreja {
     private StatusIgreja status;
 
     private String presbiterio;
+
+    private String cidade;
+
+    private String estado;
+
+    private String endereco;
+
+    @OneToMany(mappedBy = "igreja", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<User> usuarios;
+
+    @Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP deve estar no formato 00000-000")
+    private String cep;
 
     @OneToMany(mappedBy = "igreja", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Membro> membros;
@@ -143,4 +156,44 @@ public class Igreja {
     }
 
     // Getters e Setters
+
+    public String getCidade() {
+        return cidade;
+    }
+
+    public void setCidade(String cidade) {
+        this.cidade = cidade;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public void setEndereco(String endereco) {
+        this.endereco = endereco;
+    }
+
+    public List<User> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(List<User> usuarios) {
+        this.usuarios = usuarios;
+    }
 }

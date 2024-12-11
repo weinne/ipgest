@@ -14,7 +14,7 @@
             <div class="card-body">
                 <form th:action="@{/login}" method="post" class="form-signin">
                     <div th:if="${param.error}">
-                        <p style="color: red;">Credenciais inválidas. Por favor, tente novamente.</p>
+                        <p style="color: red;" th:text="${param.error}">Credenciais inválidas. Por favor, tente novamente.</p>
                     </div>
                     <div class="form-group">
                         <label for="username">Username</label>
@@ -28,7 +28,7 @@
                 </form>
             </div>
             <div class="card-footer">
-                <p><a href="/newuser">Criar novo usuário</a></p>
+                <p><a th:href="@{/usuario/registrar}">Criar novo usuário</a></p>
             </div>
         </div>
     </div>

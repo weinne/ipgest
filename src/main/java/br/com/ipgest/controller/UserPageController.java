@@ -4,64 +4,58 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
+import br.com.ipgest.constants.ViewNames;
 import br.com.ipgest.model.User;
 import br.com.ipgest.repository.UserRepository;
 
 @Controller
-public class AuthController {
+@RequestMapping("/usuario")
+public class UserPageController {
 
     @Autowired
     private UserRepository userRepository;
 
     /**
-     * Página de login, renderiza o formulário de login
+     * Handles the registration of a new user.
      * 
-     * @return Retorna o nome da página de login
+     * @param user  The user object containing the registration details.
+     * @param model The model object to pass attributes to the view.
+     * @return The name of the view to be rendered.
+     * 
+     * If the username already exists, an error message is added to the model and the userForm view is returned.
+     * Otherwise, the user's password is encoded, the default role is set, and the user is saved to the repository.
+     * The login view is then returned.
      */
-    @GetMapping("/login")
-    public String login() {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
-            return "redirect:/home";
-        }
-
-        return "login"; // Renderiza a página de login
-    }
-
-    @GetMapping("/home")
-    public String home(Model model) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        String username = auth.getName(); // Nome do usuário autenticado
-        model.addAttribute("username", username);
-        return "home"; // Renderiza a página inicial
-    }
-
-    @PostMapping("/register")
+    @PostMapping("/registrar")
     public String register(@ModelAttribute User user, Model model) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             model.addAttribute("error", "Usuário já existe");
-            return "newuser";
+            return ViewNames.USER_FORM;
         }
 
+        System.out.println("Usuário cadastrado: " + user);
+
+        user.setAtivo(true);
         user.setPassword(new BCryptPasswordEncoder().encode(user.getPassword()));
         user.setRoles(new HashSet<>(Set.of("ROLE_USER"))); // Define o papel padrão
+        
         userRepository.save(user);
-
+        
+        // Redireciona para a página de login
         return "redirect:/login";
     }
 
     
-    @GetMapping("/newuser")
+    @GetMapping("/registrar")
     public String newUser(Model model) {
-        return "newuser";
+        return ViewNames.USER_FORM;
     }
 }
