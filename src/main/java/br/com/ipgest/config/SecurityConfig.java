@@ -1,6 +1,6 @@
 package br.com.ipgest.config;
 
-import br.com.ipgest.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -9,9 +9,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
+
+import br.com.ipgest.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -20,25 +19,22 @@ public class SecurityConfig {
     @Autowired
     private UserService userService;
 
-        @Autowired
+    @Autowired
     private AuthenticationSuccessHandler loginSuccessHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/usuario/**", "/igreja/**", "/login", "/logout").permitAll()
-                .requestMatchers("/admin/**").hasRole("ADMIN")
-                .anyRequest().permitAll()
+                .requestMatchers("/login", "/logout", "/css/**", "/js/**").permitAll() // Permitir acesso a login, logout e recursos estáticos
+                .requestMatchers("/admin/**").hasRole("ADMIN") // Apenas usuários com papel de ADMIN podem acessar /admin
+                .requestMatchers("/usuario/**").permitAll() // Permitir acesso ao registro de usuário
+                .requestMatchers("/h2-console/**").permitAll() // Permitir acesso ao console H2
+                .anyRequest().authenticated() // Qualquer outra requisição precisa estar autenticada
             )
             .formLogin(form -> form
                 .loginPage("/login")
-                .defaultSuccessUrl("/home", true)
-                .failureHandler((request, response, exception) -> {
-                    String errorMessage = URLEncoder.encode(exception.getMessage(), StandardCharsets.UTF_8.toString());
-                    response.sendRedirect("/login?error=" + errorMessage);
-                })
-                .successHandler(loginSuccessHandler)
+                .successHandler(loginSuccessHandler) // Usar o handler de sucesso de login
                 .permitAll()
             )
             .logout(logout -> logout
@@ -46,7 +42,15 @@ public class SecurityConfig {
                 .logoutSuccessUrl("/login?logout")
                 .permitAll()
             )
-            .userDetailsService(userService);
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/h2-console/**") // Ignorar CSRF para o console do H2
+            )
+            .headers(headers -> headers
+                .frameOptions(frameOptions -> frameOptions
+                    .sameOrigin() // Permitir que o console do H2 seja carregado em um iframe
+                )
+            );
+
         return http.build();
     }
 

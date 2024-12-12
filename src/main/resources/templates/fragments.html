@@ -23,7 +23,7 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <!-- A lista de igrejas deve ser fornecida pelo backend e passada para o modelo -->
-                            <select class="form-control" id="igrejaSelector" th:field="*{selectedIgreja}">
+                            <select class="form-control" id="igrejaSelector" th:field="*{selectedIgreja.id}">
                                 <option th:each="igreja : ${igrejas}" th:value="${igreja.id}" th:text="${igreja.nome}"></option>
                             </select>
                         </li>

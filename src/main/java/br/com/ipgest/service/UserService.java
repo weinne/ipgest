@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import br.com.ipgest.model.User;
 import br.com.ipgest.repository.UserRepository;
@@ -37,12 +38,18 @@ public class UserService implements UserDetailsService {
 
         System.out.println("Usuário logado: " + user);
 
+        user = getUserById(user.getId()); // Busca o usuário no banco de dados
+        user.getIgrejas().size(); // Inicializa a coleção `igrejas`
+
         return user;
     }
 
+    @Transactional
     public User getUserById(Long id) {
-        return userRepository.findById(id)
+        User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found with id: " + id));
+        user.getIgrejas().size(); // Inicializa a coleção `igrejas`
+        return user;
     }
 
     public User save(User user) {

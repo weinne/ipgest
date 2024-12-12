@@ -18,7 +18,7 @@
     </script>
 </head>
 <body class="bg-dark text-light">
-    <div th:replace="fragments :: header"></div>
+    <div th:replace="~{fragments :: header}"></div>
     <div class="container mt-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -85,6 +85,6 @@
             </div>
         </div>
     </div>
-    <div th:replace="fragments :: footer"></div>
+    <div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>

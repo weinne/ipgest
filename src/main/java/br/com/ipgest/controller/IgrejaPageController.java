@@ -1,13 +1,10 @@
 package br.com.ipgest.controller;
 
-import java.util.List;
+import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -42,23 +39,15 @@ public class IgrejaPageController extends BasePageController<Igreja, Long> {
         return "igrejaList";
     }
 
-    @ModelAttribute
-    public void addAttributes(Model model) {
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        List<Igreja> igrejas = igrejaService.findByUser(username);
-        model.addAttribute("igrejas", igrejas);
-        model.addAttribute("selectedIgreja", new Igreja()); // Adiciona o objeto selectedIgreja ao modelo
-    }
-
     @Override
     protected void validateEntity(Long id, Igreja entity, @ModelAttribute("selectedIgreja") Long selectedIgrejaId) {
         User user = userService.getLoggedInUser();
-        user = userService.getUserById(user.getId());
 
-         if (user == null) {
+        if (user == null) {
             throw new AccessDeniedException("Usuário não está autenticado.");
         }
+
+        user = userService.getUserById(user.getId());
 
         if (id != null) {
             Igreja existingIgreja = igrejaService.findById(id);
@@ -70,7 +59,15 @@ public class IgrejaPageController extends BasePageController<Igreja, Long> {
             if (!user.getIgrejas().contains(existingIgreja)) {
                 throw new AccessDeniedException("Você não tem permissão para editar esta igreja.");
             }
+
+            if (entity.getUsers() == null) {
+                entity.setUsers(new ArrayList<>());
+            }
+            entity.getUsers().add(user);
         } else {
+            if (entity.getUsers() == null) {
+                entity.setUsers(new ArrayList<>());
+            }
             entity.getUsers().add(user);
         }
     }

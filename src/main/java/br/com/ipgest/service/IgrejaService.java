@@ -19,13 +19,8 @@ public class IgrejaService extends BaseService<Igreja, Long>  {
     @Autowired
     private UserRepository userRepository;
 
-    public Igreja save(Igreja igreja) {
-        return igrejaRepository.save(igreja);
-    }
-
     public List<Igreja> findByUser(String username) {
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new RuntimeException("User not found!"));
+        User user = userRepository.findByUsername(username).orElseThrow(() -> new RuntimeException("User not found"));
         return igrejaRepository.findByUsers(user);
     }
 }

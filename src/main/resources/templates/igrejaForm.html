@@ -17,7 +17,7 @@
     </script>
 </head>
 <body class="bg-dark text-light">
-    <div th:replace="fragments :: header"></div>
+    <div th:replace="~{fragments :: header}"></div>
     <div class="container mt-4">
         <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
@@ -32,7 +32,7 @@
                 <div th:if="${error}" class="alert alert-danger" role="alert">
                     <p th:text="${error}"></p>
                 </div>
-                <form th:action="@{/igreja/save}" method="post">
+                <form th:action="@{/igreja/save}" th:object="${igreja}" method="post">
                     <input type="hidden" id="id" name="id" th:value="${entity.id}">
                     <div class="mb-3">
                         <label for="nome" class="form-label">Nome da Igreja:</label>
@@ -62,7 +62,17 @@
                         <label for="dataOrganizacao" class="form-label">Data de Organização:</label>
                         <input type="date" class="form-control" id="dataOrganizacao" name="dataOrganizacao" th:value="${entity.dataOrganizacao}" required>
                     </div>
-                    <input type="hidden" id="status" name="status" th:value="ATIVA">
+                    <div class="mb-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status" th:value="${entity.status}" required>
+                            <option value="" disabled selected>Selecione o status</option>
+                            <option value="CONGREGACAO">Congregação</option>
+                            <option value="CONGREGACAO_PRESBITERIAL">Congregação Presbiterial</option>
+                            <option value="IGREJA_ATIVA">Igreja Ativa</option>
+                            <option value="PONTO_DE_PREGACAO">Ponto de Pregação</option>
+                            <option value="INATIVA">Inativa</option>
+                        </select>
+                    </div>
                     <div class="mb-3">
                         <label for="presbiterio" class="form-label">Presbitério:</label>
                         <input type="text" class="form-control" id="presbiterio" name="presbiterio" th:value="${entity.presbiterio}" required>
@@ -72,6 +82,6 @@
             </div>
         </div>
     </div>
-    <div th:replace="fragments :: footer"></div>
+    <div th:replace="~{fragments :: footer}"></div>
 </body>
 </html>

@@ -1,6 +1,5 @@
 package br.com.ipgest.controller;
 
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -49,7 +47,7 @@ public abstract class BasePageController<T extends Identifiable<ID>, ID> {
     }
 
     @PostMapping("/save")
-    public String saveEntity(@RequestParam(required = false) ID id, @RequestBody T entity, @ModelAttribute("selectedIgreja") Long selectedIgrejaId) {
+    public String saveEntity(@RequestParam(required = false) ID id, @ModelAttribute T entity, @ModelAttribute("selectedIgreja") Long selectedIgrejaId) {
         validateEntity(id, entity, selectedIgrejaId);
 
         if (id != null) {

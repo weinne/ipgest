@@ -22,11 +22,9 @@ public class LoginController {
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
-            return "home";
+            return "redirect:/home"; // Redireciona para a página inicial se o usuário já estiver autenticado
         }
 
         return "login"; // Renderiza a página de login
     }
-
-
 }
