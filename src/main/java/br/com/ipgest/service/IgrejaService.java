@@ -6,28 +6,26 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.com.ipgest.model.Igreja;
+import br.com.ipgest.model.User;
 import br.com.ipgest.repository.IgrejaRepository;
+import br.com.ipgest.repository.UserRepository;
 
 @Service
-public class IgrejaService {
+public class IgrejaService extends BaseService<Igreja, Long>  {
 
     @Autowired
     private IgrejaRepository igrejaRepository;
 
-    public List<Igreja> findAll() {
-        return igrejaRepository.findAll();
-    }
-
-    public Igreja findById(Long id) {
-        return igrejaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Igreja não encontrada!"));
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     public Igreja save(Igreja igreja) {
         return igrejaRepository.save(igreja);
     }
 
-    public void deleteById(Long id) {
-        igrejaRepository.deleteById(id);
+    public List<Igreja> findByUser(String username) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+        return igrejaRepository.findByUsers(user);
     }
 }

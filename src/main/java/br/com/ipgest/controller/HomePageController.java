@@ -1,12 +1,13 @@
 package br.com.ipgest.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.ipgest.constants.ViewNames;
 import br.com.ipgest.model.User;
 import br.com.ipgest.service.UserService;
 
@@ -19,9 +20,15 @@ public class HomePageController {
 
     @GetMapping
     public String home(Model model) {
-        User user = userService.getLoggedInUser();
-        String username = user.getUsername();
-        model.addAttribute("username", username);
-        return ViewNames.HOME;
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
+            User user = userService.getLoggedInUser();
+            if (user.getIgrejas().isEmpty()) {
+                return "redirect:/igreja";
+            }
+            return "home";
+        }
+
+        return "login"; // Renderiza a página de login
     }
 }

@@ -6,8 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.ipgest.constants.ViewNames;
-
+/**
+ * Controller responsável por renderizar a página de login
+ */
 @Controller
 @RequestMapping("/login")
 public class LoginController {
@@ -21,10 +22,10 @@ public class LoginController {
     public String login() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (auth != null && auth.isAuthenticated() && !auth.getName().equals("anonymousUser")) {
-            return ViewNames.HOME;
+            return "home";
         }
 
-        return ViewNames.LOGIN; // Renderiza a página de login
+        return "login"; // Renderiza a página de login
     }
 
 

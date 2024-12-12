@@ -22,7 +22,7 @@ import jakarta.validation.constraints.Size;
 
 
 @Entity
-public class Membro {
+public class Membro implements Identifiable<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -121,10 +121,12 @@ public class Membro {
     @JoinColumn(name = "igreja_id")
     private Igreja igreja;
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }

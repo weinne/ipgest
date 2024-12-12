@@ -13,6 +13,9 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
@@ -20,7 +23,7 @@ import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Pattern;
 
 @Entity
-public class Igreja {
+public class Igreja implements Identifiable<Long> {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -46,8 +49,13 @@ public class Igreja {
 
     private String endereco;
 
-    @OneToMany(mappedBy = "igreja", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<User> usuarios;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_igreja",
+        joinColumns = @JoinColumn(name = "igreja_id"),
+        inverseJoinColumns = @JoinColumn(name = "usuario_id")
+    )
+    private List<User> users;
 
     @Pattern(regexp = "\\d{5}-\\d{3}", message = "CEP deve estar no formato 00000-000")
     private String cep;
@@ -99,10 +107,12 @@ public class Igreja {
         this.createdBy = createdBy;
     }
 
+    @Override
     public Long getId() {
         return id;
     }
 
+    @Override
     public void setId(Long id) {
         this.id = id;
     }
@@ -189,11 +199,11 @@ public class Igreja {
         this.endereco = endereco;
     }
 
-    public List<User> getUsuarios() {
-        return usuarios;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setUsuarios(List<User> usuarios) {
-        this.usuarios = usuarios;
+    public void getUsers(List<User> users) {
+        this.users = users;
     }
 }

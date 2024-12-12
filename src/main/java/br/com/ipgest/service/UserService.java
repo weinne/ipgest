@@ -1,15 +1,16 @@
 package br.com.ipgest.service;
 
-import br.com.ipgest.model.User;
-import br.com.ipgest.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
+import org.springframework.stereotype.Service;
+
+import br.com.ipgest.model.User;
+import br.com.ipgest.repository.UserRepository;
 
 @Service
 public class UserService implements UserDetailsService {
@@ -32,11 +33,9 @@ public class UserService implements UserDetailsService {
             return null;
         }
         
-        //finds by id
-        User user = userRepository.findById(((User) authentication.getPrincipal()).getId()).get();
+        User user = (User) authentication.getPrincipal();
 
         System.out.println("Usuário logado: " + user);
-        System.err.println("Igreja do usuário logado: " + user.getIgreja());
 
         return user;
     }

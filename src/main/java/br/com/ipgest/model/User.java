@@ -5,6 +5,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -12,12 +17,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.ManyToOne;
-
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 
 @Entity
 @Table(name = "usuarios")
@@ -34,17 +36,13 @@ public class User implements UserDetails {
     @ElementCollection(fetch = FetchType.EAGER)
     private Set<String> roles = new HashSet<>();
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "igreja_id")
-    private Igreja igreja;
-
-    public Igreja getIgreja() {
-        return igreja;
-    }
-
-    public void setIgreja(Igreja igreja) {
-        this.igreja = igreja;
-    }
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(
+        name = "user_igreja",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "igreja_id")
+    )
+    private Set<Igreja> igrejas = new HashSet<>();
 
     // Getters e Setters
     public Long getId() {
@@ -120,5 +118,13 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return ativo;
+    }
+
+    public Set<Igreja> getIgrejas() {
+        return igrejas;
+    }
+
+    public void setIgrejas(Set<Igreja> igrejas) {
+        this.igrejas = igrejas;
     }
 }

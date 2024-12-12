@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import br.com.ipgest.constants.ViewNames;
 import br.com.ipgest.model.User;
 import br.com.ipgest.repository.UserRepository;
 
@@ -38,7 +37,7 @@ public class UserPageController {
     public String register(@ModelAttribute User user, Model model) {
         if (userRepository.findByUsername(user.getUsername()).isPresent()) {
             model.addAttribute("error", "Usuário já existe");
-            return ViewNames.USER_FORM;
+            return "userForm";
         }
 
         System.out.println("Usuário cadastrado: " + user);
@@ -56,6 +55,6 @@ public class UserPageController {
     
     @GetMapping("/registrar")
     public String newUser(Model model) {
-        return ViewNames.USER_FORM;
+        return "userForm";
     }
 }
