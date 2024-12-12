@@ -72,4 +72,9 @@ public class IgrejaPageController extends BasePageController<Igreja, Long> {
         }
     }
 
+    @Override
+    protected String getEntityName() {
+        return "igreja";
+    }
+
 }

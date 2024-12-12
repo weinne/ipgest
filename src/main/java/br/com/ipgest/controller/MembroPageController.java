@@ -41,6 +41,11 @@ public class MembroPageController extends BasePageController<Membro, Long> {
     }
 
     @Override
+    protected String getEntityName() {
+        return "membro";
+    }
+
+    @Override
     protected void validateEntity(Long id, Membro membro, @ModelAttribute("selectedIgreja") Long selectedIgrejaId) {
         User user = userService.getLoggedInUser();
 
@@ -61,6 +66,9 @@ public class MembroPageController extends BasePageController<Membro, Long> {
             
             membro.setId(id);
         } else {
+            if (selectedIgrejaId == null) {
+                throw new IllegalArgumentException("O ID da igreja selecionada não pode ser nulo.");
+            }
             membro.setIgreja(igrejaService.findById(selectedIgrejaId));
         }
     }

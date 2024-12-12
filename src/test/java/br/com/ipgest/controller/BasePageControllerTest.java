@@ -1,5 +1,7 @@
 package br.com.ipgest.controller;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
 import java.util.Arrays;
@@ -63,7 +65,9 @@ public class BasePageControllerTest {
 
     @Test
     public void testShowPage() {
-        List<Identifiable<Long>> entities = Arrays.asList(mock(Identifiable.class), mock(Identifiable.class));
+        Identifiable<Long> identifiable1 = mock(Identifiable.class);
+        Identifiable<Long> identifiable2 = mock(Identifiable.class);
+        List<Identifiable<Long>> entities = Arrays.asList(identifiable1, identifiable2);
         when(service.findAll()).thenReturn(entities);
 
         String viewName = controller.showPage(model);

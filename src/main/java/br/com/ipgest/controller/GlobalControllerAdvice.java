@@ -63,7 +63,7 @@ public class GlobalControllerAdvice {
             User user = (User) userService.loadUserByUsername(username);
             List<Igreja> igrejas = igrejaService.findByUser(user.getUsername());
             model.addAttribute("igrejas", igrejas);
-            model.addAttribute("selectedIgreja", new Igreja()); // Adiciona o objeto selectedIgreja ao modelo
+            model.addAttribute("selectedIgreja", igrejas.getFirst()); // Adiciona o objeto selectedIgreja ao modelo
         }
     }
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -85,10 +84,11 @@ public abstract class BasePageController<T extends Identifiable<ID>, ID> {
      * @param id the ID of the entity to be saved, can be null for new entities
      * @param entity the entity object to be saved
      * @param selectedIgrejaId the ID of the selected "Igreja" (church)
+     * @param model the model to which attributes are added
      * @return the view name of the entity list
      */
     @PostMapping("/save")
-    public String saveEntity(@RequestParam(required = false) ID id, @RequestBody T entity, @ModelAttribute("selectedIgreja") Long selectedIgrejaId) {
+    public String saveEntity(@RequestParam(required = false) ID id, @ModelAttribute T entity, @RequestParam(value = "selectedIgreja", required = false) Long selectedIgrejaId, Model model) {
         validateEntity(id, entity, selectedIgrejaId);
 
         if (id != null) {
@@ -96,7 +96,8 @@ public abstract class BasePageController<T extends Identifiable<ID>, ID> {
         }
 
         service.save(entity);
-        return getEntityListView();
+
+        return "redirect:/" + getEntityName(); // Retorna a view diretamente
     }
 
     /**
@@ -144,4 +145,6 @@ public abstract class BasePageController<T extends Identifiable<ID>, ID> {
      * @return the view name for the entity list
      */
     protected abstract String getEntityListView();
+
+    protected abstract String getEntityName();
 }
