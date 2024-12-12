@@ -25,11 +25,6 @@ O ipgest é um sistema de gestão em desenvolvimento para auxiliar igrejas presb
 - H2 Database
 - Maven
 
-## Estrutura do Projeto
-
-src/ ├── main/ │ ├── java/ │ │ └── br/com/ipgest/ │ │ ├── config/ │ │ ├── constants/ │ │ ├── controller/ │ │ ├── model/ │ │ ├── repository/ │ │ ├── security/ │ │ └── service/ │ └── resources/ │ ├── templates/ │ └── application.properties └── test/ └── java/ └── br/com/ipgest/
-
-
 ## Como Executar
 
 1. Clone o repositório:
