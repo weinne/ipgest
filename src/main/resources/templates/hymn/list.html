@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{hymn.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{hymn.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/hymns/add}" class="btn btn-primary ms-2">[[#{hymn.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${hymns.empty}">[[#{hymn.list.empty}]]</div>
+            <div th:if="${!hymns.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{hymn.id.label}]]</th>
+                            <th scope="col">[[#{hymn.title.label}]]</th>
+                            <th scope="col">[[#{hymn.lyricsAuthor.label}]]</th>
+                            <th scope="col">[[#{hymn.musicAuthor.label}]]</th>
+                            <th scope="col">[[#{hymn.hymnary.label}]]</th>
+                            <th scope="col">[[#{hymn.hymnNumber.label}]]</th>
+                            <th scope="col">[[#{hymn.link.label}]]</th>
+                            <th scope="col">[[#{hymn.tone.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="hymn : ${hymns}">
+                            <td>[[${hymn.id}]]</td>
+                            <td>[[${hymn.title}]]</td>
+                            <td>[[${hymn.lyricsAuthor}]]</td>
+                            <td>[[${hymn.musicAuthor}]]</td>
+                            <td>[[${hymn.hymnary}]]</td>
+                            <td>[[${hymn.hymnNumber}]]</td>
+                            <td>[[${hymn.link}]]</td>
+                            <td>[[${hymn.tone}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/hymns/edit/{id}(id=${hymn.id})}" class="btn btn-sm btn-secondary">[[#{hymn.list.edit}]]</a>
+                                    <form th:action="@{/hymns/delete/{id}(id=${hymn.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{hymn.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{worshipService.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{worshipService.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/worshipServices/add}" class="btn btn-primary ms-2">[[#{worshipService.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${worshipServices.empty}">[[#{worshipService.list.empty}]]</div>
+            <div th:if="${!worshipServices.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{worshipService.id.label}]]</th>
+                            <th scope="col">[[#{worshipService.subject.label}]]</th>
+                            <th scope="col">[[#{worshipService.startTime.label}]]</th>
+                            <th scope="col">[[#{worshipService.endTime.label}]]</th>
+                            <th scope="col">[[#{worshipService.local.label}]]</th>
+                            <th scope="col">[[#{worshipService.preacher.label}]]</th>
+                            <th scope="col">[[#{worshipService.sermonText.label}]]</th>
+                            <th scope="col">[[#{worshipService.church.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="worshipService : ${worshipServices}">
+                            <td>[[${worshipService.id}]]</td>
+                            <td>[[${worshipService.subject}]]</td>
+                            <td>[[${worshipService.startTime}]]</td>
+                            <td>[[${worshipService.endTime}]]</td>
+                            <td>[[${worshipService.local}]]</td>
+                            <td>[[${worshipService.preacher}]]</td>
+                            <td>[[${worshipService.sermonText}]]</td>
+                            <td>[[${worshipService.church}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/worshipServices/edit/{id}(id=${worshipService.id})}" class="btn btn-sm btn-secondary">[[#{worshipService.list.edit}]]</a>
+                                    <form th:action="@{/worshipServices/delete/{id}(id=${worshipService.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{worshipService.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{worshipService.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{worshipService.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/worshipServices}" class="btn btn-secondary">[[#{worshipService.add.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('worshipService')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='subject', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='startTime', required=true, inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='endTime', required=true, inputClass='js-datetimepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='local')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='notes', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='preacher')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='sermonText')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='liturgy', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='church', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='worshipService', field='hymns', type='multiselect')}" />
+                <input type="submit" th:value="#{worshipService.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

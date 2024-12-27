@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{income.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{income.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/incomes/add}" class="btn btn-primary ms-2">[[#{income.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${incomes.empty}">[[#{income.list.empty}]]</div>
+            <div th:if="${!incomes.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{income.id.label}]]</th>
+                            <th scope="col">[[#{income.description.label}]]</th>
+                            <th scope="col">[[#{income.amount.label}]]</th>
+                            <th scope="col">[[#{income.date.label}]]</th>
+                            <th scope="col">[[#{income.paymentMethod.label}]]</th>
+                            <th scope="col">[[#{income.supplierOrClient.label}]]</th>
+                            <th scope="col">[[#{income.invoice.label}]]</th>
+                            <th scope="col">[[#{income.type.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="income : ${incomes}">
+                            <td>[[${income.id}]]</td>
+                            <td>[[${income.description}]]</td>
+                            <td>[[${income.amount}]]</td>
+                            <td>[[${income.date}]]</td>
+                            <td>[[${income.paymentMethod}]]</td>
+                            <td>[[${income.supplierOrClient}]]</td>
+                            <td>[[${income.invoice}]]</td>
+                            <td>[[${income.type}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/incomes/edit/{id}(id=${income.id})}" class="btn btn-sm btn-secondary">[[#{income.list.edit}]]</a>
+                                    <form th:action="@{/incomes/delete/{id}(id=${income.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{income.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

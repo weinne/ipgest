@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{expense.edit.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{expense.edit.headline}]]</h1>
+                <div>
+                    <a th:href="@{/expenses}" class="btn btn-secondary">[[#{expense.edit.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('expense')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='id', disabled=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='description', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='amount', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='date', required=true, inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='paymentMethod')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='supplierOrClient')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='invoice')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='category')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='expense', field='church', type='select')}" />
+                <input type="submit" th:value="#{expense.edit.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

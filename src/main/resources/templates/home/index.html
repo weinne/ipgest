@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{home.index.headline}]]</title>
+        <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <h1 class="mb-4">[[#{home.index.headline}]]</h1>
+            <p class="mb-5">[(#{home.index.text})]</p>
+            <div class="col-md-4 mb-5">
+                <h4 class="mb-3">[[#{home.index.exploreEntities}]]</h4>
+                <div class="list-group">
+                    <a th:href="@{/churches}" class="list-group-item list-group-item-action">[[#{church.list.headline}]]</a>
+                    <a th:href="@{/users}" class="list-group-item list-group-item-action">[[#{user.list.headline}]]</a>
+                    <a th:href="@{/members}" class="list-group-item list-group-item-action">[[#{member.list.headline}]]</a>
+                    <a th:href="@{/plans}" class="list-group-item list-group-item-action">[[#{plan.list.headline}]]</a>
+                    <a th:href="@{/subscriptions}" class="list-group-item list-group-item-action">[[#{subscription.list.headline}]]</a>
+                    <a th:href="@{/groups}" class="list-group-item list-group-item-action">[[#{group.list.headline}]]</a>
+                    <a th:href="@{/tasks}" class="list-group-item list-group-item-action">[[#{task.list.headline}]]</a>
+                    <a th:href="@{/worshipServices}" class="list-group-item list-group-item-action">[[#{worshipService.list.headline}]]</a>
+                    <a th:href="@{/counselingSessions}" class="list-group-item list-group-item-action">[[#{counselingSession.list.headline}]]</a>
+                    <a th:href="@{/appointments}" class="list-group-item list-group-item-action">[[#{appointment.list.headline}]]</a>
+                    <a th:href="@{/hymns}" class="list-group-item list-group-item-action">[[#{hymn.list.headline}]]</a>
+                    <a th:href="@{/incomes}" class="list-group-item list-group-item-action">[[#{income.list.headline}]]</a>
+                    <a th:href="@{/expenses}" class="list-group-item list-group-item-action">[[#{expense.list.headline}]]</a>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>

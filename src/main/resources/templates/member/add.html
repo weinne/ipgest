@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{member.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{member.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/members}" class="btn btn-secondary">[[#{member.add.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('member')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='fullName', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='phone')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='email')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='address')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='city')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='postalCode')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='birthCity')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='state')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='registrationNumber')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='cpf', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='birthDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='gender', type='radio')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='maritalStatus', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='dateOfDeath', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='previousReligion')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='status', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='admissionDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='admissionMode', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='exitDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='exitReason', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='baptismDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='profissionDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='transferDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='notes', type='textarea')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='church', type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='member', field='groups', type='multiselect')}" />
+                <input type="submit" th:value="#{member.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

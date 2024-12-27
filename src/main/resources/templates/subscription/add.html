@@ -1,0 +1,29 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{subscription.add.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{subscription.add.headline}]]</h1>
+                <div>
+                    <a th:href="@{/subscriptions}" class="btn btn-secondary">[[#{subscription.add.back}]]</a>
+                </div>
+            </div>
+            <div th:replace="~{fragments/forms::globalErrors('subscription')}" />
+            <form th:action="${requestUri}" method="post" novalidate="">
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='startDate', required=true, inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='endDate', inputClass='js-datepicker')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='status', required=true, type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='paymentProvider', required=true, type='radio')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='paymentStatus', required=true, type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='paymentReference', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='plan', required=true, type='select')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='subscription', field='church', required=true, type='select')}" />
+                <input type="submit" th:value="#{subscription.add.headline}" class="btn btn-primary mt-4" />
+            </form>
+        </div>
+    </body>
+</html>

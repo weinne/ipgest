@@ -1,0 +1,56 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{church.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{church.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/churches/add}" class="btn btn-primary ms-2">[[#{church.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${churches.empty}">[[#{church.list.empty}]]</div>
+            <div th:if="${!churches.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{church.id.label}]]</th>
+                            <th scope="col">[[#{church.cnpj.label}]]</th>
+                            <th scope="col">[[#{church.name.label}]]</th>
+                            <th scope="col">[[#{church.abbreviation.label}]]</th>
+                            <th scope="col">[[#{church.presbitery.label}]]</th>
+                            <th scope="col">[[#{church.city.label}]]</th>
+                            <th scope="col">[[#{church.state.label}]]</th>
+                            <th scope="col">[[#{church.address.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="church : ${churches}">
+                            <td>[[${church.id}]]</td>
+                            <td>[[${church.cnpj}]]</td>
+                            <td>[[${church.name}]]</td>
+                            <td>[[${church.abbreviation}]]</td>
+                            <td>[[${church.presbitery}]]</td>
+                            <td>[[${church.city}]]</td>
+                            <td>[[${church.state}]]</td>
+                            <td>[[${church.address}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/churches/edit/{id}(id=${church.id})}" class="btn btn-sm btn-secondary">[[#{church.list.edit}]]</a>
+                                    <form th:action="@{/churches/delete/{id}(id=${church.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{church.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>

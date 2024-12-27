@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title>[[#{plan.list.headline}]]</title>
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 class="flex-grow-1">[[#{plan.list.headline}]]</h1>
+                <div>
+                    <a th:href="@{/plans/add}" class="btn btn-primary ms-2">[[#{plan.list.createNew}]]</a>
+                </div>
+            </div>
+            <div th:if="${plans.empty}">[[#{plan.list.empty}]]</div>
+            <div th:if="${!plans.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th scope="col">[[#{plan.id.label}]]</th>
+                            <th scope="col">[[#{plan.name.label}]]</th>
+                            <th scope="col">[[#{plan.price.label}]]</th>
+                            <th scope="col">[[#{plan.renewalPeriod.label}]]</th>
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="plan : ${plans}">
+                            <td>[[${plan.id}]]</td>
+                            <td>[[${plan.name}]]</td>
+                            <td>[[${plan.price}]]</td>
+                            <td>[[${plan.renewalPeriod}]]</td>
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/plans/edit/{id}(id=${plan.id})}" class="btn btn-sm btn-secondary">[[#{plan.list.edit}]]</a>
+                                    <form th:action="@{/plans/delete/{id}(id=${plan.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button type="submit" class="btn btn-sm btn-secondary">[[#{plan.list.delete}]]</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
