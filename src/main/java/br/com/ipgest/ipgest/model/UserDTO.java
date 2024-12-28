@@ -24,7 +24,6 @@ public class UserDTO {
     @Size(max = 255)
     private String email;
 
-    @NotNull
     private Boolean enabled;
 
     private UUID church;

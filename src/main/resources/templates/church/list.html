@@ -17,9 +17,8 @@
                 <table class="table table-striped table-hover align-middle">
                     <thead>
                         <tr>
-                            <th scope="col">[[#{church.id.label}]]</th>
-                            <th scope="col">[[#{church.cnpj.label}]]</th>
                             <th scope="col">[[#{church.name.label}]]</th>
+                            <th scope="col">[[#{church.cnpj.label}]]</th>
                             <th scope="col">[[#{church.abbreviation.label}]]</th>
                             <th scope="col">[[#{church.presbitery.label}]]</th>
                             <th scope="col">[[#{church.city.label}]]</th>
@@ -30,9 +29,8 @@
                     </thead>
                     <tbody>
                         <tr th:each="church : ${churches}">
-                            <td>[[${church.id}]]</td>
-                            <td>[[${church.cnpj}]]</td>
                             <td>[[${church.name}]]</td>
+                            <td>[[${church.cnpj}]]</td>
                             <td>[[${church.abbreviation}]]</td>
                             <td>[[${church.presbitery}]]</td>
                             <td>[[${church.city}]]</td>

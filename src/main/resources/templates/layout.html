@@ -5,7 +5,10 @@
         <meta charset="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-        <link th:href="@{/webjars/bootstrap/5.3.3/css/bootstrap.min.css}" rel="stylesheet" />
+        <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&amp;display=swap">
+        <link rel="stylesheet" href="/assets/css/bs-theme-overrides.css">
+        
         <link th:href="@{/webjars/flatpickr/4.6.13/dist/flatpickr.min.css}" rel="stylesheet" />
         <link th:href="@{/css/app.css}" rel="stylesheet" />
         <script th:src="@{/webjars/bootstrap/5.3.3/js/bootstrap.bundle.min.js}" defer></script>
@@ -17,7 +20,7 @@
         <header class="bg-light">
             <div class="container">
                 <nav class="navbar navbar-light navbar-expand-md">
-                    <a th:href="@{/}" class="navbar-brand">
+                    <a th:href="@{/dashboard}" class="navbar-brand">
                         <img th:src="@{/images/logo.png}" th:alt="#{app.title}" width="30" height="30" class="d-inline-block align-top">
                         <span class="ps-1">[[#{app.title}]]</span>
                     </a>
@@ -28,7 +31,7 @@
                     <div class="collapse navbar-collapse" id="navbarToggle">
                         <ul class="navbar-nav ms-auto">
                             <li class="navbar-item">
-                                <a th:href="@{/}" class="nav-link">[[#{navigation.home}]]</a>
+                                <a th:href="@{/dashboard}" class="nav-link">[[#{navigation.home}]]</a>
                             </li>
                             <li class="navbar-item dropdown">
                                 <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" id="navbarEntitiesLink" role="button"

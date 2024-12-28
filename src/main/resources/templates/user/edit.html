@@ -16,10 +16,9 @@
             <form th:action="${requestUri}" method="post" novalidate="">
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='id', disabled=true, type='number')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='username', required=true)}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='password', required=true)}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='email')}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='password', type='password', required=true)}" />
+                <div th:replace="~{fragments/forms::inputRow(object='user', field='email', type='email')}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='enabled', type='checkbox')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='church', type='select')}" />
                 <input type="submit" th:value="#{user.edit.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>

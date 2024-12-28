@@ -36,7 +36,7 @@ public class UserController {
     public void prepareContext(final Model model) {
         model.addAttribute("churchValues", churchRepository.findAll(Sort.by("id"))
                 .stream()
-                .collect(CustomCollectors.toSortedMap(Church::getId, Church::getCnpj)));
+                .collect(CustomCollectors.toSortedMap(Church::getId, Church::getName)));
     }
 
     @GetMapping
@@ -63,6 +63,12 @@ public class UserController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable(name = "id") final Long id, final Model model) {
+
+        UserDTO userDTO = userService.get(id);
+        if (!userService.isUserInAuthenticatedUserChurch(userDTO)) {
+            return "redirect:/users";
+        }
+
         model.addAttribute("user", userService.get(id));
         return "user/edit";
     }
@@ -74,19 +80,46 @@ public class UserController {
         if (bindingResult.hasErrors()) {
             return "user/edit";
         }
+
+        if (!userService.isUserInAuthenticatedUserChurch(userDTO)) {
+            return "redirect:/users";
+        }
+
+        userService.update(id, userDTO);
+        redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.update.success"));
+        return "redirect:/users";
+    }
+
+    @PostMapping("/update/{id}")
+    public String update(@PathVariable(name = "id") final Long id, @Valid final UserDTO userDTO, 
+            final BindingResult bindingResult, final RedirectAttributes redirectAttributes) {
+        if (bindingResult.hasErrors()) {
+            return "user/edit";
+        }
+
+        if (!userService.isUserInAuthenticatedUserChurch(userDTO)) {
+            redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.not.authorized"));
+            return "redirect:/users";
+        }
+
         userService.update(id, userDTO);
         redirectAttributes.addFlashAttribute(WebUtils.MSG_SUCCESS, WebUtils.getMessage("user.update.success"));
         return "redirect:/users";
     }
 
     @PostMapping("/delete/{id}")
-    public String delete(@PathVariable(name = "id") final Long id,
-            final RedirectAttributes redirectAttributes) {
+    public String delete(@PathVariable(name = "id") final Long id, final RedirectAttributes redirectAttributes) {
         final ReferencedWarning referencedWarning = userService.getReferencedWarning(id);
         if (referencedWarning != null) {
             redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR,
                     WebUtils.getMessage(referencedWarning.getKey(), referencedWarning.getParams().toArray()));
         } else {
+            UserDTO userDTO = userService.get(id);
+            if (!userService.isUserInAuthenticatedUserChurch(userDTO)) {
+                redirectAttributes.addFlashAttribute(WebUtils.MSG_ERROR, WebUtils.getMessage("user.not.authorized"));
+                return "redirect:/users";
+            }
+
             userService.delete(id);
             redirectAttributes.addFlashAttribute(WebUtils.MSG_INFO, WebUtils.getMessage("user.delete.success"));
         }

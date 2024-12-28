@@ -11,6 +11,8 @@ import br.com.ipgest.ipgest.util.NotFoundException;
 import br.com.ipgest.ipgest.util.ReferencedWarning;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import br.com.ipgest.ipgest.config.TenantContext;
@@ -71,6 +74,7 @@ public class UserService {
             user.setChurch(churchRepository.findById(tenantContext.getCurrentTenantId())
                     .orElseThrow(() -> new IllegalStateException("Church not found")));
         }
+        user.setEnabled(true);
         return userRepository.save(user).getId();
     }
 
@@ -121,6 +125,31 @@ public class UserService {
             return referencedWarning;
         }
         return null;
+    }
+
+    public Optional<User> getAuthenticatedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+        if (principal == null) {
+            throw new IllegalStateException("No authentication found in security context");
+        }
+
+        if (principal instanceof UserDetails userDetails) {
+            String username = userDetails.getUsername();
+            return userRepository.findByUsername(username);
+        } else {
+            throw new IllegalStateException("Authenticated principal is not an instance of UserDetails");
+        }
+    }
+
+    public boolean isUserInAuthenticatedUserChurch(UserDTO userDTO) {
+        Optional<User> authenticatedUser = getAuthenticatedUser();
+        if (authenticatedUser.isEmpty()) {
+            return false;
+        }
+
+        User user = authenticatedUser.get();
+        return user.getChurch() != null && user.getChurch().getId().equals(userDTO.getChurch());
     }
 
 }

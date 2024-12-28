@@ -19,10 +19,7 @@
                         <tr>
                             <th scope="col">[[#{user.id.label}]]</th>
                             <th scope="col">[[#{user.username.label}]]</th>
-                            <th scope="col">[[#{user.password.label}]]</th>
                             <th scope="col">[[#{user.email.label}]]</th>
-                            <th scope="col">[[#{user.enabled.label}]]</th>
-                            <th scope="col">[[#{user.church.label}]]</th>
                             <th><!-- --></th>
                         </tr>
                     </thead>
@@ -30,10 +27,7 @@
                         <tr th:each="user : ${users}">
                             <td>[[${user.id}]]</td>
                             <td>[[${user.username}]]</td>
-                            <td>[[${user.password}]]</td>
                             <td>[[${user.email}]]</td>
-                            <td>[[${user.enabled}]]</td>
-                            <td>[[${user.church}]]</td>
                             <td>
                                 <div class="float-end text-nowrap">
                                     <a th:href="@{/users/edit/{id}(id=${user.id})}" class="btn btn-sm btn-secondary">[[#{user.list.edit}]]</a>

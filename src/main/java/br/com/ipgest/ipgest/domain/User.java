@@ -63,8 +63,8 @@ public class User implements UserDetails  {
     @Column
     private String email;
 
-    @Column(nullable = false)
-    private Boolean enabled;
+    @Column
+    private Boolean enabled = true;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "church_id")

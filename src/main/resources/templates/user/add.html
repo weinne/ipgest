@@ -17,8 +17,11 @@
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='username', required=true)}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='password', required=true)}" />
                 <div th:replace="~{fragments/forms::inputRow(object='user', field='email')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='enabled', type='checkbox')}" />
-                <div th:replace="~{fragments/forms::inputRow(object='user', field='church', type='select')}" />
+                <!-- Campo igreja oculto -->
+                <input type="hidden" th:field="*{user.church}" />
+
+                <!-- Campo enabled oculto -->
+                <input type="hidden" th:field="*{user.enabled}" value="true" />
                 <input type="submit" th:value="#{user.add.headline}" class="btn btn-primary mt-4" />
             </form>
         </div>
